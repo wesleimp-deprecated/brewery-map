@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MapGL, { Marker, FlyToInterpolator } from "react-map-gl";
-import BreweryInfo from "../BreweryInfo";
+import BreweryInfo from "./BreweryInfo";
 import CustomPin from "./CustomPin";
 
 class Map extends Component {
@@ -47,6 +47,7 @@ class Map extends Component {
 	}
 
 	setBreweryInfo = (breweryInfo) => {
+		console.log(breweryInfo);
 		this.setState({ breweryInfo })
 	}
 
