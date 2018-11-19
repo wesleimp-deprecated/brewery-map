@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MapGL, { Marker, FlyToInterpolator } from "react-map-gl";
 import BreweryInfo from "../BreweryInfo";
-import { Point } from "./styles";
+import CustomPin from "./CustomPin";
 
 class Map extends Component {
 	state = {
@@ -10,9 +10,9 @@ class Map extends Component {
 			height: window.innerHeight,
 			latitude: 37.7577,
 			longitude: -122.4376,
-			zoom: 10
+			zoom: 10,
 		},
-		breweryInfo: null
+		breweryInfo: null,
 	};
 
 	componentDidMount() {
@@ -21,22 +21,33 @@ class Map extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		const { latitude, longitude} = props.cordinates
-		const { viewport } = this.state;
+		if (!!props.brewerySelected){
+			this.changeLocation(props);
+		}
+	}
 
+	changeLocation = (props) => {
+		const { latitude, longitude } = props.brewerySelected
+		const { viewport } = this.state;
 		this.setState({
 			viewport: {
 				...viewport,
-				latitude,
-				longitude,
+				latitude: parseFloat(latitude),
+				longitude: parseFloat(longitude),
 				transitionInterpolator: new FlyToInterpolator(),
-      			transitionDuration: 1000
+				transitionDuration: 1000,
 			}
 		});
+
+		this.setBreweryInfo(props.brewerySelected);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleWindowResize);
+	}
+
+	setBreweryInfo = (breweryInfo) => {
+		this.setState({ breweryInfo })
 	}
 
 	handleWindowResize = () => {
@@ -60,17 +71,14 @@ class Map extends Component {
 			latitude={parseFloat(brewery.latitude)} 
 			longitude={parseFloat(brewery.longitude)}
 		>
-			<Point onClick={() => this.setState({ breweryInfo: brewery })}></Point>
+			<CustomPin onClick={() => this.setBreweryInfo(brewery)}></CustomPin>
 		</Marker>
 	);
 
-	renderBreweryInfo() {
+	renderBreweryInfo = () => {
 		const { breweryInfo } = this.state;
 		return breweryInfo && (
-			<BreweryInfo 
-				brewery={breweryInfo} 
-				onClose={() => this.setState({ breweryInfo: null})}
-			/>
+			<BreweryInfo brewery={breweryInfo} onClose={() => this.setBreweryInfo(null)} />
 		)
 	}
 
@@ -79,7 +87,7 @@ class Map extends Component {
 		const { breweries } = this.props;
 		return (
 			<MapGL 
-				{...viewport} 
+				{...viewport}
 				mapStyle="mapbox://styles/mapbox/basic-v9"
 				mapboxApiAccessToken="pk.eyJ1Ijoid2VzbGVpbXAiLCJhIjoiY2pvajAxNnAzMDAwazNwb2ZjdDhhejg0eSJ9.7H6dzrktLLtExbm5dbz4-Q"
 				onViewportChange={this.handleViewportChange}

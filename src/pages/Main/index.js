@@ -8,34 +8,24 @@ import { Creators as BreweryActions} from '../../store/ducks/brewery';
 
 class Main extends Component {
 
-	state = {
-		cordinates: {
-			latitude: 40.7128,
-			longitude: 74.0060
-		}
-	}
+	state = { brewerySelected: undefined }
 
 	componentDidMount() {
         this.props.addBreweryRequest();
 	}
 	
 	handleBrewerySelected = (brewery) => {
-		this.setState({ 
-			cordinates: { 
-				latitude: parseFloat(brewery.latitude), 
-				longitude: parseFloat(brewery.longitude)
-			}
-		});
+		this.setState({ brewerySelected: brewery });
 
 	}
 
 	render() {
 		const { breweries } = this.props;
-		const { cordinates } = this.state;
+		const { brewerySelected } = this.state;
 		return (
 			<Container>
 				<Sidebar handleBrewerySelected={this.handleBrewerySelected} breweries={breweries}/>
-				<Map cordinates={cordinates} breweries={breweries}/>
+				<Map brewerySelected={brewerySelected} breweries={breweries}/>
 			</Container>
 		);
 	}
