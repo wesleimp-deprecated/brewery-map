@@ -1,19 +1,25 @@
 import React, { Component } from "react";
-import MapGL, { Marker, FlyToInterpolator } from "react-map-gl";
+import MapGL, { Marker, FlyToInterpolator, Popup } from "react-map-gl";
 import BreweryInfo from "./BreweryInfo";
 import CustomPin from "./CustomPin";
 
 class Map extends Component {
-	state = {
-		viewport: {
-			width: window.innerWidth,
-			height: window.innerHeight,
-			latitude: 37.7577,
-			longitude: -122.4376,
-			zoom: 10,
-		},
-		breweryInfo: null,
-	};
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			viewport: {
+				width: window.innerWidth,
+				height: window.innerHeight,
+				latitude: 37.7577,
+				longitude: -122.4376,
+				zoom: 10,
+			},
+			breweryInfo: null,
+		};
+	}
+	
 
 	componentDidMount() {
 		window.addEventListener("resize", this.handleWindowResize);
@@ -47,7 +53,6 @@ class Map extends Component {
 	}
 
 	setBreweryInfo = (breweryInfo) => {
-		console.log(breweryInfo);
 		this.setState({ breweryInfo })
 	}
 
@@ -79,7 +84,13 @@ class Map extends Component {
 	renderBreweryInfo = () => {
 		const { breweryInfo } = this.state;
 		return breweryInfo && (
-			<BreweryInfo brewery={breweryInfo} onClose={() => this.setBreweryInfo(null)} />
+			<Popup 
+				latitude={parseFloat(breweryInfo.latitude)}
+				longitude={parseFloat(breweryInfo.longitude)}
+				onClose={() => this.setBreweryInfo(null)}
+			>
+				<BreweryInfo brewery={breweryInfo} />
+			</Popup>
 		)
 	}
 
