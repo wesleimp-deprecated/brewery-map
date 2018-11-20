@@ -85,9 +85,11 @@ class Map extends Component {
 		const { breweryInfo } = this.state;
 		return breweryInfo && (
 			<Popup 
+				closeOnClick={false}
+				closeButton={false}
 				latitude={parseFloat(breweryInfo.latitude)}
 				longitude={parseFloat(breweryInfo.longitude)}
-				onClose={() => this.setBreweryInfo(null)}
+				//onClose={() => this.setBreweryInfo(null)}
 			>
 				<BreweryInfo brewery={breweryInfo} />
 			</Popup>
@@ -103,6 +105,7 @@ class Map extends Component {
 				mapStyle="mapbox://styles/mapbox/basic-v9"
 				mapboxApiAccessToken="pk.eyJ1Ijoid2VzbGVpbXAiLCJhIjoiY2pvajAxNnAzMDAwazNwb2ZjdDhhejg0eSJ9.7H6dzrktLLtExbm5dbz4-Q"
 				onViewportChange={this.handleViewportChange}
+				onClick={() => this.setBreweryInfo(null)}
 			>
 				{breweries.map(this.renderBreweryMarkers)}
 				{this.renderBreweryInfo()}
