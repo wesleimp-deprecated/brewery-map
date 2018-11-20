@@ -8,7 +8,7 @@ import { Creators as BreweryActions} from '../../store/ducks/brewery';
 
 class Main extends Component {
 
-	state = { brewerySelected: undefined }
+	state = { brewerySelected: null }
 
 	componentDidMount() {
         this.props.addBreweryRequest();
