@@ -106,6 +106,7 @@ class Map extends Component {
 				mapboxApiAccessToken="pk.eyJ1Ijoid2VzbGVpbXAiLCJhIjoiY2pvajAxNnAzMDAwazNwb2ZjdDhhejg0eSJ9.7H6dzrktLLtExbm5dbz4-Q"
 				onViewportChange={this.handleViewportChange}
 				onClick={() => this.setBreweryInfo(null)}
+				doubleClickZoom={false}
 			>
 				{breweries.map(this.renderBreweryMarkers)}
 				{this.renderBreweryInfo()}
