@@ -1,1 +1,1 @@
-Show all breweries in the USA
+Shows all breweries in the USA
